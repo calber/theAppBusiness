@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -27,6 +29,10 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * @author Carlo Alberto Negri
+ */
 
 public class MainActivity extends Activity {
 
@@ -84,7 +90,7 @@ public class MainActivity extends Activity {
                 }
 
                 pad.setList(plist);
-                Log.d(TAG, "Error Response code: " + response.toString());
+                Log.d(TAG, "Error Response code: " + toString());
             }
         };
     }
@@ -121,15 +127,13 @@ public class MainActivity extends Activity {
 
             if (view == null) {
                 view = inflater.inflate(R.layout.peoplerow, viewGroup, false);
-
             }
 
             ((TextView) view.findViewById(R.id.name)).setText(this.plist.get(i).getName());
             ((TextView) view.findViewById(R.id.job)).setText(this.plist.get(i).getJobtitle());
             ((TextView) view.findViewById(R.id.bio)).setText(this.plist.get(i).getBio());
 
-            final ImageView iv = ((ImageView) view.findViewById(R.id.image));
-            imageLoader.get(this.plist.get(i).getImgurl(), ImageLoader.getImageListener(iv, android.R.drawable.sym_def_app_icon, android.R.drawable.ic_dialog_alert));
+            ((NetworkImageView) view.findViewById(R.id.image)).setImageUrl(this.plist.get(i).getImgurl(), imageLoader);
 
             return view;
         }
@@ -183,8 +187,7 @@ public class MainActivity extends Activity {
         @Override
         public void putBitmap(String url, Bitmap bitmap) {
             Log.d(TAG, "Put: " + url);
-            put(url, bitmap);
+            put(url, ImageHelper.getRoundedShape(bitmap));
         }
     }
-
 }
