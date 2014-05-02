@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.4'
+        classpath 'com.android.tools.build:gradle:0.9.+'
     }
 }
 apply plugin: 'android'
@@ -13,8 +13,32 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 17
-    buildToolsVersion "17.0.0"
+    compileSdkVersion 19
+    buildToolsVersion "19.0.0"
+
+    signingConfigs {
+        release {
+            storeFile file("android-kstore")
+            storePassword "genova"
+            keyAlias "demo"
+            keyPassword "genova"
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            runProguard true
+            proguardFile 'proguard.cfg'
+
+        }
+
+        debug {
+            signingConfig signingConfigs.release
+            runProguard false
+
+        }
+    }
 
     sourceSets {
         main {
@@ -26,7 +50,5 @@ android {
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
         }
-
-        instrumentTest.setRoot('tests')
     }
 }

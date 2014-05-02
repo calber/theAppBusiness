@@ -8,7 +8,7 @@ import android.graphics.Rect;
 public class ImageHelper {
 
     public static Bitmap getRoundedShape(Bitmap sourceBitmap) {
-        int targetWidth = 252;
+        int targetWidth = 187;
         int targetHeight = 187;
 
         Bitmap targetBitmap = Bitmap.createBitmap(sourceBitmap.getWidth(), sourceBitmap.getHeight(), Bitmap.Config.ARGB_8888);

@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
         Uri.Builder uri = new Uri.Builder();
         uri.scheme("http");
         uri.authority("theappbusiness.com");
-        uri.path("people");
+        uri.path("our-team");
         String url = uri.build().toString();
 
         StringRequest request = new StringRequest(Request.Method.GET, url, createSuccessListener(), createErrorListener());
@@ -82,11 +82,21 @@ public class MainActivity extends Activity {
                 List<AppPeople> plist = new ArrayList<AppPeople>();
 
                 Document doc = Jsoup.parse(response);
-                Elements peoples = doc.select("div.profile");
+                Elements peoples = doc.select("div.col2");
 
+                String a, b, c, d;
                 for (Element people : peoples) {
-                    plist.add(new AppPeople(people.select("img.wp-post-image").first().attr("src"), people.select("h3").get(0).text(),
-                            people.select("h3").get(1).text(), people.select("p").first().text()));
+                    try {
+                        a = people.select("div.title").select("img").first().attr("src");
+                        b = people.select("h3").first().text();
+                        c = people.select("p").get(0).text();
+                        d = people.select("p").get(1).text();
+
+                        plist.add(new AppPeople(people.select("div.title").select("img").first().attr("src"),
+                                people.select("h3").first().text(), people.select("p").get(0).text(), people.select("p").get(1).text()));
+                    } catch (Exception e) {
+                        Log.e(TAG, "error", e);
+                    }
                 }
 
                 pad.setList(plist);
